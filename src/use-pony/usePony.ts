@@ -14,7 +14,13 @@ const TRANSITION_DURATION_MS = 200;
 
 // TODO: readme
 
-export const usePony = ({ numItems }: { numItems: number }) => {
+export const usePony = ({
+  numItems,
+  isAnnouncerVisible = false,
+}: {
+  numItems: number;
+  isAnnouncerVisible?: boolean;
+}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const sectionRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -154,15 +160,17 @@ export const usePony = ({ numItems }: { numItems: number }) => {
     ref: announcerRef,
     'aria-live': 'polite' as AriaAttributes['aria-live'],
     'aria-atomic': 'true' as AriaAttributes['aria-atomic'],
-    style: {
-      clip: 'rect(0 0 0 0)',
-      clipPath: 'inset(50%)',
-      height: '1px',
-      overflow: 'hidden',
-      position: 'absolute',
-      whiteSpace: 'nowrap',
-      width: '1px',
-    } as CSSProperties,
+    style: isAnnouncerVisible
+      ? {}
+      : ({
+          clip: 'rect(0 0 0 0)',
+          clipPath: 'inset(50%)',
+          height: '1px',
+          overflow: 'hidden',
+          position: 'absolute',
+          whiteSpace: 'nowrap',
+          width: '1px',
+        } as CSSProperties),
   });
 
   return {
