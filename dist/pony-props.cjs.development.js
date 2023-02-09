@@ -73,12 +73,14 @@ var getOrder = function getOrder(_ref) {
   return index - activeSlideIndex < 0 ? numItems - Math.abs(index - activeSlideIndex) : index - activeSlideIndex;
 };
 
-var TRANSITION_DURATION_MS = 200; // TODO: readme
-
 var usePony = function usePony(_ref) {
   var numItems = _ref.numItems,
       _ref$isAnnouncerVisib = _ref.isAnnouncerVisible,
-      isAnnouncerVisible = _ref$isAnnouncerVisib === void 0 ? false : _ref$isAnnouncerVisib;
+      isAnnouncerVisible = _ref$isAnnouncerVisib === void 0 ? false : _ref$isAnnouncerVisib,
+      _ref$reduceMotion = _ref.reduceMotion,
+      reduceMotion = _ref$reduceMotion === void 0 ? false : _ref$reduceMotion,
+      _ref$transitionDurati = _ref.transitionDuration,
+      transitionDuration = _ref$transitionDurati === void 0 ? 500 : _ref$transitionDurati;
 
   var _useReducer = react.useReducer(reducer, initialState),
       state = _useReducer[0],
@@ -91,6 +93,7 @@ var usePony = function usePony(_ref) {
   var carouselItemRef = react.useRef(null);
   var buttonRef = react.useRef(null);
   var announcerRef = react.useRef(null);
+  var TRANSITION_DURATION_MS = reduceMotion ? 0 : transitionDuration;
 
   var _useState = react.useState(null),
       currentSwipeDirection = _useState[0],
@@ -213,7 +216,7 @@ var usePony = function usePony(_ref) {
         flexBasis: '100%',
         transition: // Only apply this transition when the current swipe direction is next
         // This ensures the re-ordering of items is smoother.
-        currentSwipeDirection === exports.ActionKind.Next ? 'order 0.3s ease-in' : 'none'
+        currentSwipeDirection === exports.ActionKind.Next ? "order " + (reduceMotion ? 0 : TRANSITION_DURATION_MS / 1000 + 0.1) + "s ease-in" : 'none'
       }
     };
   };

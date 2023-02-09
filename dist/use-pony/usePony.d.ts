@@ -1,8 +1,10 @@
 import { CSSProperties } from 'react';
 import { ActionKind } from './usePony.interface';
-export declare const usePony: ({ numItems, isAnnouncerVisible, }: {
+export declare const usePony: ({ numItems, isAnnouncerVisible, reduceMotion, transitionDuration, }: {
     numItems: number;
     isAnnouncerVisible?: boolean | undefined;
+    reduceMotion?: boolean | undefined;
+    transitionDuration?: number | undefined;
 }) => {
     getSectionProps: () => {
         ref: import("react").RefObject<HTMLDivElement>;

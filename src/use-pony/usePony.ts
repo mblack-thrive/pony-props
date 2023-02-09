@@ -10,16 +10,18 @@ import { ActionKind } from './usePony.interface';
 import { initialState, reducer } from './usePony.state';
 import { getOrder } from './utils/get-flex-order';
 
-const TRANSITION_DURATION_MS = 200;
-
 // TODO: readme
 
 export const usePony = ({
   numItems,
   isAnnouncerVisible = false,
+  reduceMotion = false,
+  transitionDuration = 500,
 }: {
   numItems: number;
   isAnnouncerVisible?: boolean;
+  reduceMotion?: boolean;
+  transitionDuration?: number;
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -29,6 +31,7 @@ export const usePony = ({
   const carouselItemRef = useRef<HTMLLIElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const announcerRef = useRef<HTMLDivElement>(null);
+  const TRANSITION_DURATION_MS = reduceMotion ? 0 : transitionDuration;
 
   const [currentSwipeDirection, setCurrentSwipeDirection] = useState<
     ActionKind.Previous | ActionKind.Next | null
@@ -143,7 +146,9 @@ export const usePony = ({
         // Only apply this transition when the current swipe direction is next
         // This ensures the re-ordering of items is smoother.
         currentSwipeDirection === ActionKind.Next
-          ? 'order 0.3s ease-in'
+          ? `order ${
+              reduceMotion ? 0 : TRANSITION_DURATION_MS / 1000 + 0.1
+            }s ease-in`
           : 'none',
     },
   });
