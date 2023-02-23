@@ -14,16 +14,25 @@ import { getOrder } from './utils/get-flex-order';
 
 export const usePony = ({
   numItems,
+  initialActiveSlideIndex = initialState.activeSlideIndex,
   isAnnouncerVisible = false,
   reduceMotion = false,
   transitionDuration = 500,
+  onInit,
+  onAfterChange,
 }: {
   numItems: number;
+  initialActiveSlideIndex?: number;
   isAnnouncerVisible?: boolean;
   reduceMotion?: boolean;
   transitionDuration?: number;
+  onInit?(): void;
+  onAfterChange?(activeIndex: number): void;
 }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, {
+    ...initialState,
+    activeSlideIndex: initialActiveSlideIndex,
+  });
   const sectionRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const carouselWrapperRef = useRef<HTMLDivElement>(null);
@@ -36,6 +45,8 @@ export const usePony = ({
   const [currentSwipeDirection, setCurrentSwipeDirection] = useState<
     ActionKind.Previous | ActionKind.Next | null
   >(null);
+
+  useEffect(() => onInit && onInit(), []);
 
   useEffect(() => {
     if (!sectionRef.current) {
@@ -89,6 +100,7 @@ export const usePony = ({
 
       // Automatically focus on new active carousel slide for a11y reasons.
       setTimeout(() => {
+        onAfterChange && onAfterChange(state.activeSlideIndex);
         document.getElementById('arousel-item-active')?.focus();
       }, TRANSITION_DURATION_MS);
     }

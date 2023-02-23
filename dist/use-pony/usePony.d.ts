@@ -1,10 +1,13 @@
 import { CSSProperties } from 'react';
 import { ActionKind } from './usePony.interface';
-export declare const usePony: ({ numItems, isAnnouncerVisible, reduceMotion, transitionDuration, }: {
+export declare const usePony: ({ numItems, initialActiveSlideIndex, isAnnouncerVisible, reduceMotion, transitionDuration, onInit, onAfterChange, }: {
     numItems: number;
+    initialActiveSlideIndex?: number | undefined;
     isAnnouncerVisible?: boolean | undefined;
     reduceMotion?: boolean | undefined;
     transitionDuration?: number | undefined;
+    onInit?(): void;
+    onAfterChange?(activeIndex: number): void;
 }) => {
     getSectionProps: () => {
         ref: import("react").RefObject<HTMLDivElement>;

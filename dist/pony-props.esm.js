@@ -73,14 +73,20 @@ var getOrder = function getOrder(_ref) {
 
 var usePony = function usePony(_ref) {
   var numItems = _ref.numItems,
+      _ref$initialActiveSli = _ref.initialActiveSlideIndex,
+      initialActiveSlideIndex = _ref$initialActiveSli === void 0 ? initialState.activeSlideIndex : _ref$initialActiveSli,
       _ref$isAnnouncerVisib = _ref.isAnnouncerVisible,
       isAnnouncerVisible = _ref$isAnnouncerVisib === void 0 ? false : _ref$isAnnouncerVisib,
       _ref$reduceMotion = _ref.reduceMotion,
       reduceMotion = _ref$reduceMotion === void 0 ? false : _ref$reduceMotion,
       _ref$transitionDurati = _ref.transitionDuration,
-      transitionDuration = _ref$transitionDurati === void 0 ? 500 : _ref$transitionDurati;
+      transitionDuration = _ref$transitionDurati === void 0 ? 500 : _ref$transitionDurati,
+      onInit = _ref.onInit,
+      onAfterChange = _ref.onAfterChange;
 
-  var _useReducer = useReducer(reducer, initialState),
+  var _useReducer = useReducer(reducer, _extends({}, initialState, {
+    activeSlideIndex: initialActiveSlideIndex
+  })),
       state = _useReducer[0],
       dispatch = _useReducer[1];
 
@@ -97,6 +103,9 @@ var usePony = function usePony(_ref) {
       currentSwipeDirection = _useState[0],
       setCurrentSwipeDirection = _useState[1];
 
+  useEffect(function () {
+    return onInit && onInit();
+  }, []);
   useEffect(function () {
     if (!sectionRef.current) {
       throw new Error('please apply getSectionProps() to your <section>');
@@ -144,6 +153,7 @@ var usePony = function usePony(_ref) {
       setTimeout(function () {
         var _document$getElementB;
 
+        onAfterChange && onAfterChange(state.activeSlideIndex);
         (_document$getElementB = document.getElementById('arousel-item-active')) == null ? void 0 : _document$getElementB.focus();
       }, TRANSITION_DURATION_MS);
     }
