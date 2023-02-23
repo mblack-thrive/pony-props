@@ -104,7 +104,12 @@ var usePony = function usePony(_ref) {
       setCurrentSwipeDirection = _useState[1];
 
   useEffect(function () {
-    return onInit && onInit();
+    console.log('onInit');
+    console.log(onInit);
+
+    if (onInit) {
+      onInit();
+    }
   }, []);
   useEffect(function () {
     if (!sectionRef.current) {

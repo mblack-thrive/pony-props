@@ -46,7 +46,13 @@ export const usePony = ({
     ActionKind.Previous | ActionKind.Next | null
   >(null);
 
-  useEffect(() => onInit && onInit(), []);
+  useEffect(() => {
+    console.log('onInit');
+    console.log(onInit);
+    if (onInit) {
+      onInit();
+    }
+  }, []);
 
   useEffect(() => {
     if (!sectionRef.current) {
