@@ -47,8 +47,6 @@ export const usePony = ({
   >(null);
 
   useEffect(() => {
-    console.log('onInit');
-    console.log(onInit);
     if (onInit) {
       onInit();
     }

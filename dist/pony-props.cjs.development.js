@@ -106,9 +106,6 @@ var usePony = function usePony(_ref) {
       setCurrentSwipeDirection = _useState[1];
 
   react.useEffect(function () {
-    console.log('onInit');
-    console.log(onInit);
-
     if (onInit) {
       onInit();
     }
