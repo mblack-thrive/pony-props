@@ -212,7 +212,7 @@ var usePony = function usePony(_ref) {
   var getCarouselItemProps = function getCarouselItemProps(index) {
     return {
       ref: carouselItemRef,
-      id: "carousel-item-" + (index === state.activeSlideIndex ? '-active' : 'index'),
+      id: "carousel-item-" + (index === state.activeSlideIndex ? 'active' : index),
       'aria-roledescription': 'slide',
       'aria-label': index + 1 + " of " + numItems,
       'aria-current': index === state.activeSlideIndex,

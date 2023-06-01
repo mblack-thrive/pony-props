@@ -143,7 +143,7 @@ export const usePony = ({
   const getCarouselItemProps = (index: number) => ({
     ref: carouselItemRef,
     id: `carousel-item-${
-      index === state.activeSlideIndex ? '-active' : 'index'
+      index === state.activeSlideIndex ? 'active' : index
     }`,
     'aria-roledescription': 'slide',
     'aria-label': `${index + 1} of ${numItems}`,
