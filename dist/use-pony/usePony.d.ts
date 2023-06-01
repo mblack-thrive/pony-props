@@ -39,7 +39,6 @@ export declare const usePony: ({ numItems, initialActiveSlideIndex, isAnnouncerV
         'aria-roledescription': string;
         'aria-label': string;
         'aria-current': boolean;
-        'aria-hidden': boolean;
         style: {
             order: number;
             display: string;
@@ -51,7 +50,7 @@ export declare const usePony: ({ numItems, initialActiveSlideIndex, isAnnouncerV
     getButtonProps: (direction: ActionKind.Previous | ActionKind.Next) => {
         ref: import("react").RefObject<HTMLButtonElement>;
         'aria-label': string;
-        onClick: () => void;
+        onClick: (noMotion?: boolean) => void;
     };
     getAnnouncerProps: () => {
         ref: import("react").RefObject<HTMLDivElement>;

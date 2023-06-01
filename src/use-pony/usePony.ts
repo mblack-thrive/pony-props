@@ -45,6 +45,7 @@ export const usePony = ({
   const [currentSwipeDirection, setCurrentSwipeDirection] = useState<
     ActionKind.Previous | ActionKind.Next | null
   >(null);
+  const [noMotion, setNoMotion] = useState(reduceMotion);
 
   useEffect(() => {
     if (onInit) {
@@ -110,8 +111,9 @@ export const usePony = ({
     }
   }, [state.activeSlideIndex, currentSwipeDirection, numItems]);
 
-  const slide = (slideDirection: ActionKind.Previous | ActionKind.Next) => {
+  const slide = (slideDirection: ActionKind.Previous | ActionKind.Next, useNoMotion: boolean) => {
     setCurrentSwipeDirection(slideDirection);
+    setNoMotion(useNoMotion || reduceMotion);
     dispatch({ type: slideDirection, payload: { numItems } });
   };
 
@@ -146,9 +148,9 @@ export const usePony = ({
       index === state.activeSlideIndex ? '-active' : ''
     }`,
     'aria-roledescription': 'slide',
-    'aria-label': `${index} of ${numItems}`,
+    'aria-label': `${index + 1} of ${numItems}`,
     'aria-current': index === state.activeSlideIndex,
-    'aria-hidden': index !== state.activeSlideIndex,
+    // 'aria-hidden': index !== state.activeSlideIndex,
     style: {
       order: getOrder({
         index,
@@ -163,7 +165,7 @@ export const usePony = ({
         // This ensures the re-ordering of items is smoother.
         currentSwipeDirection === ActionKind.Next
           ? `order ${
-              reduceMotion ? 0 : TRANSITION_DURATION_MS / 1000 + 0.1
+              (noMotion || reduceMotion) ? 0 : TRANSITION_DURATION_MS / 1000 + 0.1
             }s ease-in`
           : 'none',
     },
@@ -174,7 +176,7 @@ export const usePony = ({
   ) => ({
     ref: buttonRef,
     'aria-label': direction === ActionKind.Previous ? 'Previous' : 'Next',
-    onClick: () => slide(direction),
+    onClick: (noMotion = false) => slide(direction, noMotion),
   });
 
   const getAnnouncerProps = () => ({

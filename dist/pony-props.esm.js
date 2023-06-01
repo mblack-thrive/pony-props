@@ -103,6 +103,10 @@ var usePony = function usePony(_ref) {
       currentSwipeDirection = _useState[0],
       setCurrentSwipeDirection = _useState[1];
 
+  var _useState2 = useState(reduceMotion),
+      noMotion = _useState2[0],
+      setNoMotion = _useState2[1];
+
   useEffect(function () {
     if (onInit) {
       onInit();
@@ -161,8 +165,9 @@ var usePony = function usePony(_ref) {
     }
   }, [state.activeSlideIndex, currentSwipeDirection, numItems]);
 
-  var slide = function slide(slideDirection) {
+  var slide = function slide(slideDirection, useNoMotion) {
     setCurrentSwipeDirection(slideDirection);
+    setNoMotion(useNoMotion || reduceMotion);
     dispatch({
       type: slideDirection,
       payload: {
@@ -212,9 +217,9 @@ var usePony = function usePony(_ref) {
       ref: carouselItemRef,
       id: "carousel-item-" + index + (index === state.activeSlideIndex ? '-active' : ''),
       'aria-roledescription': 'slide',
-      'aria-label': index + " of " + numItems,
+      'aria-label': index + 1 + " of " + numItems,
       'aria-current': index === state.activeSlideIndex,
-      'aria-hidden': index !== state.activeSlideIndex,
+      // 'aria-hidden': index !== state.activeSlideIndex,
       style: {
         order: getOrder({
           index: index,
@@ -226,7 +231,7 @@ var usePony = function usePony(_ref) {
         flexBasis: '100%',
         transition: // Only apply this transition when the current swipe direction is next
         // This ensures the re-ordering of items is smoother.
-        currentSwipeDirection === ActionKind.Next ? "order " + (reduceMotion ? 0 : TRANSITION_DURATION_MS / 1000 + 0.1) + "s ease-in" : 'none'
+        currentSwipeDirection === ActionKind.Next ? "order " + (noMotion || reduceMotion ? 0 : TRANSITION_DURATION_MS / 1000 + 0.1) + "s ease-in" : 'none'
       }
     };
   };
@@ -235,8 +240,12 @@ var usePony = function usePony(_ref) {
     return {
       ref: buttonRef,
       'aria-label': direction === ActionKind.Previous ? 'Previous' : 'Next',
-      onClick: function onClick() {
-        return slide(direction);
+      onClick: function onClick(noMotion) {
+        if (noMotion === void 0) {
+          noMotion = false;
+        }
+
+        return slide(direction, noMotion);
       }
     };
   };
