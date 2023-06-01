@@ -99,7 +99,7 @@ export const usePony = ({
           : transformArray.reverse(),
         {
           easing: 'ease-in',
-          duration: TRANSITION_DURATION_MS,
+          duration: noMotion ? 0 : TRANSITION_DURATION_MS,
         }
       );
 

@@ -153,7 +153,7 @@ var usePony = function usePony(_ref) {
       }];
       carouselRef == null ? void 0 : (_carouselRef$current = carouselRef.current) == null ? void 0 : _carouselRef$current.animate(currentSwipeDirection === ActionKind.Previous ? transformArray : transformArray.reverse(), {
         easing: 'ease-in',
-        duration: TRANSITION_DURATION_MS
+        duration: noMotion ? 0 : TRANSITION_DURATION_MS
       }); // Automatically focus on new active carousel slide for a11y reasons.
 
       setTimeout(function () {
