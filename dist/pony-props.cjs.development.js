@@ -163,7 +163,7 @@ var usePony = function usePony(_ref) {
 
         onAfterChange && onAfterChange(state.activeSlideIndex);
         (_document$getElementB = document.getElementById('carousel-item-active')) == null ? void 0 : _document$getElementB.focus();
-      }, TRANSITION_DURATION_MS);
+      }, noMotion ? 0 : TRANSITION_DURATION_MS);
     }
   }, [state.activeSlideIndex, currentSwipeDirection, numItems]);
 

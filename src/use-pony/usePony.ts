@@ -107,7 +107,7 @@ export const usePony = ({
       setTimeout(() => {
         onAfterChange && onAfterChange(state.activeSlideIndex);
         document.getElementById('carousel-item-active')?.focus();
-      }, TRANSITION_DURATION_MS);
+      }, noMotion ? 0 : TRANSITION_DURATION_MS);
     }
   }, [state.activeSlideIndex, currentSwipeDirection, numItems]);
 
