@@ -233,7 +233,7 @@ var usePony = function usePony(_ref) {
         flexBasis: '100%',
         transition: // Only apply this transition when the current swipe direction is next
         // This ensures the re-ordering of items is smoother.
-        currentSwipeDirection === (exports.ActionKind.Next || !(noMotion || reduceMotion)) ? "order " + (TRANSITION_DURATION_MS / 1000 + 0.1) + "s ease-in" : 'none'
+        currentSwipeDirection === exports.ActionKind.Next && !(noMotion || reduceMotion) ? "order " + (TRANSITION_DURATION_MS / 1000 + 0.1) + "s ease-in" : 'none'
       }
     };
   };
