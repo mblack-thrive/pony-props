@@ -106,7 +106,7 @@ export const usePony = ({
       // Automatically focus on new active carousel slide for a11y reasons.
       setTimeout(() => {
         onAfterChange && onAfterChange(state.activeSlideIndex);
-        document.getElementById('arousel-item-active')?.focus();
+        document.getElementById('carousel-item-active')?.focus();
       }, TRANSITION_DURATION_MS);
     }
   }, [state.activeSlideIndex, currentSwipeDirection, numItems]);
