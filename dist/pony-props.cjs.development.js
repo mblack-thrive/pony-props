@@ -105,10 +105,6 @@ var usePony = function usePony(_ref) {
       currentSwipeDirection = _useState[0],
       setCurrentSwipeDirection = _useState[1];
 
-  var _useState2 = react.useState(reduceMotion),
-      noMotion = _useState2[0],
-      setNoMotion = _useState2[1];
-
   react.useEffect(function () {
     if (onInit) {
       onInit();
@@ -155,7 +151,7 @@ var usePony = function usePony(_ref) {
       }];
       carouselRef == null ? void 0 : (_carouselRef$current = carouselRef.current) == null ? void 0 : _carouselRef$current.animate(currentSwipeDirection === exports.ActionKind.Previous ? transformArray : transformArray.reverse(), {
         easing: 'ease-in',
-        duration: noMotion ? 0 : TRANSITION_DURATION_MS
+        duration: TRANSITION_DURATION_MS
       }); // Automatically focus on new active carousel slide for a11y reasons.
 
       setTimeout(function () {
@@ -163,13 +159,12 @@ var usePony = function usePony(_ref) {
 
         onAfterChange && onAfterChange(state.activeSlideIndex);
         (_document$getElementB = document.getElementById('carousel-item-active')) == null ? void 0 : _document$getElementB.focus();
-      }, noMotion ? 0 : TRANSITION_DURATION_MS);
+      }, TRANSITION_DURATION_MS);
     }
   }, [state.activeSlideIndex, currentSwipeDirection, numItems]);
 
-  var slide = function slide(slideDirection, useNoMotion) {
+  var slide = function slide(slideDirection) {
     setCurrentSwipeDirection(slideDirection);
-    setNoMotion(useNoMotion || reduceMotion);
     dispatch({
       type: slideDirection,
       payload: {
@@ -233,7 +228,7 @@ var usePony = function usePony(_ref) {
         flexBasis: '100%',
         transition: // Only apply this transition when the current swipe direction is next
         // This ensures the re-ordering of items is smoother.
-        currentSwipeDirection === exports.ActionKind.Next && !(noMotion || reduceMotion) ? "order " + (TRANSITION_DURATION_MS / 1000 + 0.1) + "s ease-in" : 'none'
+        currentSwipeDirection === exports.ActionKind.Next ? "order " + (TRANSITION_DURATION_MS / 1000 + 0.1) + "s ease-in" : 'none'
       }
     };
   };
@@ -242,12 +237,8 @@ var usePony = function usePony(_ref) {
     return {
       ref: buttonRef,
       'aria-label': direction === exports.ActionKind.Previous ? 'Previous' : 'Next',
-      onClick: function onClick(noMotion) {
-        if (noMotion === void 0) {
-          noMotion = false;
-        }
-
-        return slide(direction, noMotion);
+      onClick: function onClick() {
+        return slide(direction);
       }
     };
   };

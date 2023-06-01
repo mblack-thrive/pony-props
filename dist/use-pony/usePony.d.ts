@@ -50,7 +50,7 @@ export declare const usePony: ({ numItems, initialActiveSlideIndex, isAnnouncerV
     getButtonProps: (direction: ActionKind.Previous | ActionKind.Next) => {
         ref: import("react").RefObject<HTMLButtonElement>;
         'aria-label': string;
-        onClick: (noMotion?: boolean) => void;
+        onClick: () => void;
     };
     getAnnouncerProps: () => {
         ref: import("react").RefObject<HTMLDivElement>;
