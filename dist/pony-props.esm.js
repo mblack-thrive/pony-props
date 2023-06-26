@@ -70,7 +70,7 @@ var reducer = function reducer(prevState, action) {
 
     case ActionKind.UpdateOrder:
       return _extends({}, prevState, {
-        order: new Array(payload == null ? void 0 : payload.numItems).map(function (_, i) {
+        order: Array.apply(null, Array(payload == null ? void 0 : payload.numItems)).map(function (_, i) {
           return getOrder({
             index: i,
             activeSlideIndex: (payload == null ? void 0 : payload.activeSlideIndex) || prevState.activeSlideIndex,
@@ -99,7 +99,7 @@ var usePony = function usePony(_ref) {
 
   var _useReducer = useReducer(reducer, _extends({}, initialState, {
     activeSlideIndex: initialActiveSlideIndex,
-    order: new Array(numItems).map(function (_, i) {
+    order: Array.apply(null, Array(numItems)).map(function (_, i) {
       return getOrder({
         index: i,
         activeSlideIndex: initialActiveSlideIndex,
