@@ -111,12 +111,21 @@ export const usePony = ({
         }
       );
 
-      // Automatically focus on new active carousel slide for a11y reasons.
-      setTimeout(() => {
+      if (currentSwipeDirection === ActionKind.Previous) {
         dispatch({ type: ActionKind.UpdateOrder, payload: {
           numItems,
           activeSlideIndex: state.activeSlideIndex,
         }});
+      }
+
+      // Automatically focus on new active carousel slide for a11y reasons.
+      setTimeout(() => {
+        if (currentSwipeDirection === ActionKind.Next) {
+          dispatch({ type: ActionKind.UpdateOrder, payload: {
+            numItems,
+            activeSlideIndex: state.activeSlideIndex,
+          }});
+        }
         onAfterChange && onAfterChange(state.activeSlideIndex);
         // document.getElementById('carousel-item-active')?.focus();
       }, TRANSITION_DURATION_MS);

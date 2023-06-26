@@ -173,9 +173,9 @@ var usePony = function usePony(_ref) {
       carouselRef == null ? void 0 : (_carouselRef$current = carouselRef.current) == null ? void 0 : _carouselRef$current.animate(currentSwipeDirection === ActionKind.Previous ? transformArray : transformArray.reverse(), {
         easing: 'ease-in',
         duration: TRANSITION_DURATION_MS
-      }); // Automatically focus on new active carousel slide for a11y reasons.
+      });
 
-      setTimeout(function () {
+      if (currentSwipeDirection === ActionKind.Previous) {
         dispatch({
           type: ActionKind.UpdateOrder,
           payload: {
@@ -183,6 +183,20 @@ var usePony = function usePony(_ref) {
             activeSlideIndex: state.activeSlideIndex
           }
         });
+      } // Automatically focus on new active carousel slide for a11y reasons.
+
+
+      setTimeout(function () {
+        if (currentSwipeDirection === ActionKind.Next) {
+          dispatch({
+            type: ActionKind.UpdateOrder,
+            payload: {
+              numItems: numItems,
+              activeSlideIndex: state.activeSlideIndex
+            }
+          });
+        }
+
         onAfterChange && onAfterChange(state.activeSlideIndex); // document.getElementById('carousel-item-active')?.focus();
       }, TRANSITION_DURATION_MS);
     }
