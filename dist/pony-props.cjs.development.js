@@ -26,11 +26,27 @@ function _extends() {
   ActionKind["Next"] = "Next";
   ActionKind["Previous"] = "Previous";
   ActionKind["Reset"] = "Reset";
+  ActionKind["UpdateOrder"] = "UpdateOrder";
 })(exports.ActionKind || (exports.ActionKind = {}));
+
+/**
+ * Gets the flex order for a slide.
+ * @param index - the index of the slide
+ * @param activeSlideIndex - the current/visible slide index
+ * @param numItems - number of slides in carousel
+ * @returns the flex order for a carousel item
+ */
+var getOrder = function getOrder(_ref) {
+  var index = _ref.index,
+      activeSlideIndex = _ref.activeSlideIndex,
+      numItems = _ref.numItems;
+  return index - activeSlideIndex < 0 ? numItems - Math.abs(index - activeSlideIndex) : index - activeSlideIndex;
+};
 
 var initialState = {
   activeSlideIndex: 0,
-  slideDirection: exports.ActionKind.Reset
+  slideDirection: exports.ActionKind.Reset,
+  order: []
 };
 var reducer = function reducer(prevState, action) {
   var type = action.type,
@@ -54,23 +70,20 @@ var reducer = function reducer(prevState, action) {
         activeSlideIndex: isLastIndex ? 0 : prevState.activeSlideIndex + 1
       });
 
+    case exports.ActionKind.UpdateOrder:
+      return _extends({}, prevState, {
+        order: new Array(payload == null ? void 0 : payload.numItems).map(function (_, i) {
+          return getOrder({
+            index: i,
+            activeSlideIndex: (payload == null ? void 0 : payload.activeSlideIndex) || prevState.activeSlideIndex,
+            numItems: payload == null ? void 0 : payload.numItems
+          });
+        })
+      });
+
     default:
       return prevState;
   }
-};
-
-/**
- * Gets the flex order for a slide.
- * @param index - the index of the slide
- * @param activeSlideIndex - the current/visible slide index
- * @param numItems - number of slides in carousel
- * @returns the flex order for a carousel item
- */
-var getOrder = function getOrder(_ref) {
-  var index = _ref.index,
-      activeSlideIndex = _ref.activeSlideIndex,
-      numItems = _ref.numItems;
-  return index - activeSlideIndex < 0 ? numItems - Math.abs(index - activeSlideIndex) : index - activeSlideIndex;
 };
 
 var usePony = function usePony(_ref) {
@@ -87,7 +100,14 @@ var usePony = function usePony(_ref) {
       onAfterChange = _ref.onAfterChange;
 
   var _useReducer = react.useReducer(reducer, _extends({}, initialState, {
-    activeSlideIndex: initialActiveSlideIndex
+    activeSlideIndex: initialActiveSlideIndex,
+    order: new Array(numItems).map(function (_, i) {
+      return getOrder({
+        index: i,
+        activeSlideIndex: initialActiveSlideIndex,
+        numItems: numItems
+      });
+    })
   })),
       state = _useReducer[0],
       dispatch = _useReducer[1];
@@ -110,6 +130,9 @@ var usePony = function usePony(_ref) {
       onInit();
     }
   }, []);
+  console.groupCollapsed('Pony state');
+  console.log(state);
+  console.groupEnd();
   react.useEffect(function () {
     if (!sectionRef.current) {
       throw new Error('please apply getSectionProps() to your <section>');
@@ -155,10 +178,14 @@ var usePony = function usePony(_ref) {
       }); // Automatically focus on new active carousel slide for a11y reasons.
 
       setTimeout(function () {
-        var _document$getElementB;
-
-        onAfterChange && onAfterChange(state.activeSlideIndex);
-        (_document$getElementB = document.getElementById('carousel-item-active')) == null ? void 0 : _document$getElementB.focus();
+        dispatch({
+          type: exports.ActionKind.UpdateOrder,
+          payload: {
+            numItems: numItems,
+            activeSlideIndex: state.activeSlideIndex
+          }
+        });
+        onAfterChange && onAfterChange(state.activeSlideIndex); // document.getElementById('carousel-item-active')?.focus();
       }, TRANSITION_DURATION_MS);
     }
   }, [state.activeSlideIndex, currentSwipeDirection, numItems]);
@@ -177,8 +204,7 @@ var usePony = function usePony(_ref) {
     return {
       ref: sectionRef,
       as: 'section',
-      'aria-labelledby': 'carousel-heading',
-      'aria-roledescription': 'carousel'
+      'aria-labelledby': 'carousel-heading'
     };
   };
 
@@ -202,7 +228,7 @@ var usePony = function usePony(_ref) {
   var getCarouselProps = function getCarouselProps() {
     return {
       ref: carouselRef,
-      'aria-label': 'Slides',
+      // 'aria-label': 'Slides',
       style: {
         display: 'flex'
       }
@@ -213,22 +239,21 @@ var usePony = function usePony(_ref) {
     return {
       ref: carouselItemRef,
       id: "carousel-item-" + (index === state.activeSlideIndex ? 'active' : index),
-      'aria-roledescription': 'slide',
+      // 'aria-roledescription': 'slide',
       'aria-label': index + 1 + " of " + numItems,
       'aria-current': index === state.activeSlideIndex,
       // 'aria-hidden': index !== state.activeSlideIndex,
       style: {
-        order: getOrder({
-          index: index,
-          activeSlideIndex: state.activeSlideIndex,
-          numItems: numItems
-        }),
+        order: state.order[index],
+        // getOrder({
+        //   index,
+        //   activeSlideIndex: state.activeSlideIndex,
+        //   numItems,
+        // }),
         display: 'flex',
         flex: '1 0 100%',
         flexBasis: '100%',
-        transition: // Only apply this transition when the current swipe direction is next
-        // This ensures the re-ordering of items is smoother.
-        currentSwipeDirection === exports.ActionKind.Next ? "order " + (TRANSITION_DURATION_MS / 1000 + 0.1) + "s ease-in" : 'none'
+        transition: 'none'
       }
     };
   };

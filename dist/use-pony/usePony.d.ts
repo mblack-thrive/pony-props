@@ -13,7 +13,6 @@ export declare const usePony: ({ numItems, initialActiveSlideIndex, isAnnouncerV
         ref: import("react").RefObject<HTMLDivElement>;
         as: string;
         'aria-labelledby': string;
-        'aria-roledescription': string;
     };
     getHeadingProps: () => {
         ref: import("react").RefObject<HTMLHeadingElement>;
@@ -28,7 +27,6 @@ export declare const usePony: ({ numItems, initialActiveSlideIndex, isAnnouncerV
     };
     getCarouselProps: () => {
         ref: import("react").RefObject<HTMLUListElement>;
-        'aria-label': string;
         style: {
             display: string;
         };
@@ -36,7 +34,6 @@ export declare const usePony: ({ numItems, initialActiveSlideIndex, isAnnouncerV
     getCarouselItemProps: (index: number) => {
         ref: import("react").RefObject<HTMLLIElement>;
         id: string;
-        'aria-roledescription': string;
         'aria-label': string;
         'aria-current': boolean;
         style: {
@@ -62,5 +59,6 @@ export declare const usePony: ({ numItems, initialActiveSlideIndex, isAnnouncerV
         currentSwipeDirection: ActionKind.Next | ActionKind.Previous | null;
         activeSlideIndex: number;
         slideDirection: ActionKind;
+        order: number[];
     };
 };

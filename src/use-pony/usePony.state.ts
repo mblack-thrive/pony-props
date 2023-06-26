@@ -32,7 +32,7 @@ export const reducer = (prevState: State, action: Action) => {
     case ActionKind.UpdateOrder:
       return {
         ...prevState,
-        order: (new Array(payload?.numItems).map((e, i) => getOrder({
+        order: (new Array(payload?.numItems).map((_, i) => getOrder({
           index: i,
           activeSlideIndex: payload?.activeSlideIndex || prevState.activeSlideIndex,
           numItems: payload?.numItems,

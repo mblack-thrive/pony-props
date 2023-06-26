@@ -32,7 +32,7 @@ export const usePony = ({
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
     activeSlideIndex: initialActiveSlideIndex,
-    order: (new Array(numItems).map((e, i) => getOrder({
+    order: (new Array(numItems).map((_, i) => getOrder({
       index: i,
       activeSlideIndex: initialActiveSlideIndex,
       numItems,
