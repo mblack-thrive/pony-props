@@ -120,6 +120,10 @@ export const usePony = ({
 
       // Automatically focus on new active carousel slide for a11y reasons.
       setTimeout(() => {
+        dispatch({ type: ActionKind.AnimationComplete, payload: {
+          numItems,
+        }});
+
         if (currentSwipeDirection === ActionKind.Next) {
           dispatch({ type: ActionKind.UpdateOrder, payload: {
             numItems,
@@ -133,8 +137,12 @@ export const usePony = ({
   }, [state.activeSlideIndex, currentSwipeDirection, numItems]);
 
   const slide = (slideDirection: ActionKind.Previous | ActionKind.Next) => {
-    setCurrentSwipeDirection(slideDirection);
-    dispatch({ type: slideDirection, payload: { numItems } });
+    if (!state.animating) {
+      setCurrentSwipeDirection(slideDirection);
+      dispatch({ type: slideDirection, payload: { numItems } });
+    } else {
+      console.log('Currently Animating');
+    }
   };
 
   const getSectionProps = () => ({

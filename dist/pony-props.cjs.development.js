@@ -27,6 +27,7 @@ function _extends() {
   ActionKind["Previous"] = "Previous";
   ActionKind["Reset"] = "Reset";
   ActionKind["UpdateOrder"] = "UpdateOrder";
+  ActionKind["AnimationComplete"] = "AnimationComplete";
 })(exports.ActionKind || (exports.ActionKind = {}));
 
 /**
@@ -46,7 +47,8 @@ var getOrder = function getOrder(_ref) {
 var initialState = {
   activeSlideIndex: 0,
   slideDirection: exports.ActionKind.Reset,
-  order: []
+  order: [],
+  animating: false
 };
 var reducer = function reducer(prevState, action) {
   var type = action.type,
@@ -60,14 +62,16 @@ var reducer = function reducer(prevState, action) {
       var isFirstIndex = prevState.activeSlideIndex === 0;
       return _extends({}, prevState, {
         slideDirection: exports.ActionKind.Previous,
-        activeSlideIndex: isFirstIndex ? (payload == null ? void 0 : payload.numItems) - 1 : prevState.activeSlideIndex - 1
+        activeSlideIndex: isFirstIndex ? (payload == null ? void 0 : payload.numItems) - 1 : prevState.activeSlideIndex - 1,
+        animating: true
       });
 
     case exports.ActionKind.Next:
       var isLastIndex = prevState.activeSlideIndex === payload.numItems - 1;
       return _extends({}, prevState, {
         slideDirection: exports.ActionKind.Next,
-        activeSlideIndex: isLastIndex ? 0 : prevState.activeSlideIndex + 1
+        activeSlideIndex: isLastIndex ? 0 : prevState.activeSlideIndex + 1,
+        animating: true
       });
 
     case exports.ActionKind.UpdateOrder:
@@ -79,6 +83,11 @@ var reducer = function reducer(prevState, action) {
             numItems: payload == null ? void 0 : payload.numItems
           });
         })
+      });
+
+    case exports.ActionKind.AnimationComplete:
+      return _extends({}, prevState, {
+        animating: false
       });
 
     default:
@@ -189,6 +198,13 @@ var usePony = function usePony(_ref) {
 
 
       setTimeout(function () {
+        dispatch({
+          type: exports.ActionKind.AnimationComplete,
+          payload: {
+            numItems: numItems
+          }
+        });
+
         if (currentSwipeDirection === exports.ActionKind.Next) {
           dispatch({
             type: exports.ActionKind.UpdateOrder,
@@ -205,13 +221,17 @@ var usePony = function usePony(_ref) {
   }, [state.activeSlideIndex, currentSwipeDirection, numItems]);
 
   var slide = function slide(slideDirection) {
-    setCurrentSwipeDirection(slideDirection);
-    dispatch({
-      type: slideDirection,
-      payload: {
-        numItems: numItems
-      }
-    });
+    if (!state.animating) {
+      setCurrentSwipeDirection(slideDirection);
+      dispatch({
+        type: slideDirection,
+        payload: {
+          numItems: numItems
+        }
+      });
+    } else {
+      console.log('Currently Animating');
+    }
   };
 
   var getSectionProps = function getSectionProps() {

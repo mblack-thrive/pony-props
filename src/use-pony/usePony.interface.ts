@@ -3,12 +3,14 @@ export enum ActionKind {
   Previous = 'Previous',
   Reset = 'Reset',
   UpdateOrder = 'UpdateOrder',
+  AnimationComplete = 'AnimationComplete',
 }
 
 export type State = {
   activeSlideIndex: number;
   slideDirection: ActionKind;
   order: number[];
+  animating: boolean;
 };
 
 export type Action = {

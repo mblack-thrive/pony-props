@@ -60,5 +60,6 @@ export declare const usePony: ({ numItems, initialActiveSlideIndex, isAnnouncerV
         activeSlideIndex: number;
         slideDirection: ActionKind;
         order: number[];
+        animating: boolean;
     };
 };

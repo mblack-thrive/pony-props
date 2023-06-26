@@ -5,6 +5,7 @@ export const initialState: State = {
   activeSlideIndex: 0,
   slideDirection: ActionKind.Reset,
   order: [],
+  animating: false,
 };
 
 export const reducer = (prevState: State, action: Action) => {
@@ -21,6 +22,7 @@ export const reducer = (prevState: State, action: Action) => {
         activeSlideIndex: isFirstIndex
           ? payload?.numItems - 1
           : prevState.activeSlideIndex - 1,
+        animating: true,
       };
     case ActionKind.Next:
       const isLastIndex = prevState.activeSlideIndex === payload.numItems - 1;
@@ -28,6 +30,7 @@ export const reducer = (prevState: State, action: Action) => {
         ...prevState,
         slideDirection: ActionKind.Next,
         activeSlideIndex: isLastIndex ? 0 : prevState.activeSlideIndex + 1,
+        animating: true,
       };
     case ActionKind.UpdateOrder:
       return {
@@ -37,6 +40,11 @@ export const reducer = (prevState: State, action: Action) => {
           activeSlideIndex: payload?.activeSlideIndex || prevState.activeSlideIndex,
           numItems: payload?.numItems,
         }))),
+      };
+    case ActionKind.AnimationComplete:
+      return {
+        ...prevState,
+        animating: false,
       };
     default:
       return prevState;
