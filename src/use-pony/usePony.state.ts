@@ -1,8 +1,10 @@
 import { Action, ActionKind, State } from './usePony.interface';
+import { getOrder } from './utils/get-flex-order';
 
 export const initialState: State = {
   activeSlideIndex: 0,
   slideDirection: ActionKind.Reset,
+  order: [],
 };
 
 export const reducer = (prevState: State, action: Action) => {
@@ -26,6 +28,15 @@ export const reducer = (prevState: State, action: Action) => {
         ...prevState,
         slideDirection: ActionKind.Next,
         activeSlideIndex: isLastIndex ? 0 : prevState.activeSlideIndex + 1,
+      };
+    case ActionKind.UpdateOrder:
+      return {
+        ...prevState,
+        order: (new Array(payload?.numItems).map((e, i) => getOrder({
+          index: i,
+          activeSlideIndex: payload?.activeSlideIndex || prevState.activeSlideIndex,
+          numItems: payload?.numItems,
+        }))),
       };
     default:
       return prevState;

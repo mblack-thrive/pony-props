@@ -32,6 +32,11 @@ export const usePony = ({
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
     activeSlideIndex: initialActiveSlideIndex,
+    order: (new Array(numItems).map((e, i) => getOrder({
+      index: i,
+      activeSlideIndex: initialActiveSlideIndex,
+      numItems,
+    })))
   });
   const sectionRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -51,6 +56,10 @@ export const usePony = ({
       onInit();
     }
   }, []);
+
+  console.groupCollapsed('Pony state');
+  console.log(state);
+  console.groupEnd();
 
   useEffect(() => {
     if (!sectionRef.current) {
@@ -104,8 +113,12 @@ export const usePony = ({
 
       // Automatically focus on new active carousel slide for a11y reasons.
       setTimeout(() => {
+        dispatch({ type: ActionKind.UpdateOrder, payload: {
+          numItems,
+          activeSlideIndex: state.activeSlideIndex,
+        }});
         onAfterChange && onAfterChange(state.activeSlideIndex);
-        document.getElementById('carousel-item-active')?.focus();
+        // document.getElementById('carousel-item-active')?.focus();
       }, TRANSITION_DURATION_MS);
     }
   }, [state.activeSlideIndex, currentSwipeDirection, numItems]);
@@ -119,7 +132,7 @@ export const usePony = ({
     ref: sectionRef,
     as: 'section',
     'aria-labelledby': 'carousel-heading',
-    'aria-roledescription': 'carousel',
+    // 'aria-roledescription': 'carousel',
   });
 
   const getHeadingProps = () => ({
@@ -134,7 +147,7 @@ export const usePony = ({
 
   const getCarouselProps = () => ({
     ref: carouselRef,
-    'aria-label': 'Slides',
+    // 'aria-label': 'Slides',
     style: {
       display: 'flex',
     },
@@ -145,25 +158,26 @@ export const usePony = ({
     id: `carousel-item-${
       index === state.activeSlideIndex ? 'active' : index
     }`,
-    'aria-roledescription': 'slide',
+    // 'aria-roledescription': 'slide',
     'aria-label': `${index + 1} of ${numItems}`,
     'aria-current': index === state.activeSlideIndex,
     // 'aria-hidden': index !== state.activeSlideIndex,
     style: {
-      order: getOrder({
-        index,
-        activeSlideIndex: state.activeSlideIndex,
-        numItems,
-      }),
+      order: state.order[index],
+      // getOrder({
+      //   index,
+      //   activeSlideIndex: state.activeSlideIndex,
+      //   numItems,
+      // }),
       display: 'flex',
       flex: '1 0 100%',
       flexBasis: '100%',
-      transition:
+      transition: 'none',
         // Only apply this transition when the current swipe direction is next
         // This ensures the re-ordering of items is smoother.
-        currentSwipeDirection === ActionKind.Next
-          ? `order ${TRANSITION_DURATION_MS / 1000 + 0.1}s ease-in`
-          : 'none',
+        // currentSwipeDirection === ActionKind.Next
+        //   ? `order ${TRANSITION_DURATION_MS / 1000 + 0.1}s ease-in`
+        //   : 'none',
     },
   });
 
