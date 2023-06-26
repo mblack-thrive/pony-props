@@ -139,9 +139,6 @@ var usePony = function usePony(_ref) {
       onInit();
     }
   }, []);
-  console.groupCollapsed('Pony state');
-  console.log(state);
-  console.groupEnd();
   react.useEffect(function () {
     if (!sectionRef.current) {
       throw new Error('please apply getSectionProps() to your <section>');
@@ -229,8 +226,6 @@ var usePony = function usePony(_ref) {
           numItems: numItems
         }
       });
-    } else {
-      console.log('Currently Animating');
     }
   };
 

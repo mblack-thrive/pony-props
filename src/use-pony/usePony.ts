@@ -57,10 +57,6 @@ export const usePony = ({
     }
   }, []);
 
-  console.groupCollapsed('Pony state');
-  console.log(state);
-  console.groupEnd();
-
   useEffect(() => {
     if (!sectionRef.current) {
       throw new Error('please apply getSectionProps() to your <section>');
@@ -140,8 +136,6 @@ export const usePony = ({
     if (!state.animating) {
       setCurrentSwipeDirection(slideDirection);
       dispatch({ type: slideDirection, payload: { numItems } });
-    } else {
-      console.log('Currently Animating');
     }
   };
 
