@@ -140,11 +140,10 @@ var usePony = function usePony(_ref) {
   useEffect(function () {
     if (!sectionRef.current) {
       throw new Error('please apply getSectionProps() to your <section>');
-    }
+    } // if (!headingRef.current) {
+    //   throw new Error('please apply getHeadingProps() to your <h{1,2,3}>');
+    // }
 
-    if (!headingRef.current) {
-      throw new Error('please apply getHeadingProps() to your <h{1,2,3}>');
-    }
 
     if (!carouselWrapperRef.current) {
       throw new Error('please apply getCarouselWrapperProps() to your <div>');
@@ -228,11 +227,12 @@ var usePony = function usePony(_ref) {
   };
 
   var getSectionProps = function getSectionProps() {
-    return {
+    return _extends({
       ref: sectionRef,
-      as: 'section',
+      as: 'section'
+    }, headingRef.current ? {
       'aria-labelledby': 'carousel-heading'
-    };
+    } : {});
   };
 
   var getHeadingProps = function getHeadingProps() {

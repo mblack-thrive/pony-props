@@ -61,9 +61,9 @@ export const usePony = ({
     if (!sectionRef.current) {
       throw new Error('please apply getSectionProps() to your <section>');
     }
-    if (!headingRef.current) {
-      throw new Error('please apply getHeadingProps() to your <h{1,2,3}>');
-    }
+    // if (!headingRef.current) {
+    //   throw new Error('please apply getHeadingProps() to your <h{1,2,3}>');
+    // }
     if (!carouselWrapperRef.current) {
       throw new Error('please apply getCarouselWrapperProps() to your <div>');
     }
@@ -142,7 +142,7 @@ export const usePony = ({
   const getSectionProps = () => ({
     ref: sectionRef,
     as: 'section',
-    'aria-labelledby': 'carousel-heading',
+    ...(headingRef.current ? { 'aria-labelledby': 'carousel-heading' } : {}),
     // 'aria-roledescription': 'carousel',
   });
 

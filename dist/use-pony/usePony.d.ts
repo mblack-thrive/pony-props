@@ -10,9 +10,9 @@ export declare const usePony: ({ numItems, initialActiveSlideIndex, isAnnouncerV
     onAfterChange?(activeIndex: number): void;
 }) => {
     getSectionProps: () => {
+        'aria-labelledby'?: string;
         ref: import("react").RefObject<HTMLDivElement>;
         as: string;
-        'aria-labelledby': string;
     };
     getHeadingProps: () => {
         ref: import("react").RefObject<HTMLHeadingElement>;
