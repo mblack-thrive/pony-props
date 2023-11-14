@@ -115,10 +115,6 @@ export const usePony = ({
               activeSlideIndex: state.activeSlideIndex,
             }});
           }
-
-          dispatch({ type: ActionKind.AnimationComplete, payload: {
-            numItems,
-          }});
   
           if (currentSwipeDirection === ActionKind.Next) {
             dispatch({ type: ActionKind.UpdateOrder, payload: {
@@ -126,6 +122,10 @@ export const usePony = ({
               activeSlideIndex: state.activeSlideIndex,
             }});
           }
+
+          dispatch({ type: ActionKind.AnimationComplete, payload: {
+            numItems,
+          }});
           onAfterChange && onAfterChange(state.activeSlideIndex);
         };
       }

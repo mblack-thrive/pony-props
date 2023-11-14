@@ -192,13 +192,6 @@ var usePony = function usePony(_ref) {
             });
           }
 
-          dispatch({
-            type: ActionKind.AnimationComplete,
-            payload: {
-              numItems: numItems
-            }
-          });
-
           if (currentSwipeDirection === ActionKind.Next) {
             dispatch({
               type: ActionKind.UpdateOrder,
@@ -209,6 +202,12 @@ var usePony = function usePony(_ref) {
             });
           }
 
+          dispatch({
+            type: ActionKind.AnimationComplete,
+            payload: {
+              numItems: numItems
+            }
+          });
           onAfterChange && onAfterChange(state.activeSlideIndex);
         };
       } // setTimeout(() => {
