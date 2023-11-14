@@ -97,7 +97,7 @@ export const usePony = ({
         { transform: 'translateX(0px)' },
       ];
 
-      carouselRef?.current?.animate(
+      const slideAnimation = carouselRef?.current?.animate(
         currentSwipeDirection === ActionKind.Previous
           ? transformArray
           : transformArray.reverse(),
@@ -107,28 +107,30 @@ export const usePony = ({
         }
       );
 
-      if (currentSwipeDirection === ActionKind.Previous) {
-        dispatch({ type: ActionKind.UpdateOrder, payload: {
-          numItems,
-          activeSlideIndex: state.activeSlideIndex,
-        }});
-      }
+      if (slideAnimation) {
+        slideAnimation.onfinish = () => {
+          if (currentSwipeDirection === ActionKind.Previous) {
+            dispatch({ type: ActionKind.UpdateOrder, payload: {
+              numItems,
+              activeSlideIndex: state.activeSlideIndex,
+            }});
+          }
 
-      // Automatically focus on new active carousel slide for a11y reasons.
-      setTimeout(() => {
-        dispatch({ type: ActionKind.AnimationComplete, payload: {
-          numItems,
-        }});
-
-        if (currentSwipeDirection === ActionKind.Next) {
-          dispatch({ type: ActionKind.UpdateOrder, payload: {
+          dispatch({ type: ActionKind.AnimationComplete, payload: {
             numItems,
-            activeSlideIndex: state.activeSlideIndex,
           }});
-        }
-        onAfterChange && onAfterChange(state.activeSlideIndex);
-        // document.getElementById('carousel-item-active')?.focus();
-      }, TRANSITION_DURATION_MS);
+  
+          if (currentSwipeDirection === ActionKind.Next) {
+            dispatch({ type: ActionKind.UpdateOrder, payload: {
+              numItems,
+              activeSlideIndex: state.activeSlideIndex,
+            }});
+          }
+          onAfterChange && onAfterChange(state.activeSlideIndex);
+        };
+      }
+      // setTimeout(() => {
+      // }, TRANSITION_DURATION_MS);
     }
   }, [state.activeSlideIndex, currentSwipeDirection, numItems]);
 
