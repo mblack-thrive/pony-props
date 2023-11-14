@@ -109,28 +109,28 @@ export const usePony = ({
 
       if (slideAnimation) {
         slideAnimation.onfinish = () => {
-          if (currentSwipeDirection === ActionKind.Previous) {
-            dispatch({ type: ActionKind.UpdateOrder, payload: {
-              numItems,
-              activeSlideIndex: state.activeSlideIndex,
-            }});
-          }
+          setTimeout(() => {
+            if (currentSwipeDirection === ActionKind.Previous) {
+              dispatch({ type: ActionKind.UpdateOrder, payload: {
+                numItems,
+                activeSlideIndex: state.activeSlideIndex,
+              }});
+            }
+    
+            if (currentSwipeDirection === ActionKind.Next) {
+              dispatch({ type: ActionKind.UpdateOrder, payload: {
+                numItems,
+                activeSlideIndex: state.activeSlideIndex,
+              }});
+            }
   
-          if (currentSwipeDirection === ActionKind.Next) {
-            dispatch({ type: ActionKind.UpdateOrder, payload: {
+            dispatch({ type: ActionKind.AnimationComplete, payload: {
               numItems,
-              activeSlideIndex: state.activeSlideIndex,
             }});
-          }
-
-          dispatch({ type: ActionKind.AnimationComplete, payload: {
-            numItems,
-          }});
-          onAfterChange && onAfterChange(state.activeSlideIndex);
+            onAfterChange && onAfterChange(state.activeSlideIndex);
+          }, 50);
         };
       }
-      // setTimeout(() => {
-      // }, TRANSITION_DURATION_MS);
     }
   }, [state.activeSlideIndex, currentSwipeDirection, numItems]);
 
@@ -176,12 +176,12 @@ export const usePony = ({
     'aria-current': index === state.activeSlideIndex,
     // 'aria-hidden': index !== state.activeSlideIndex,
     style: {
-      // order: state.order[index],
-      order: getOrder({
-        index,
-        activeSlideIndex: state.activeSlideIndex,
-        numItems,
-      }),
+      order: state.order[index],
+      // order: getOrder({
+      //   index,
+      //   activeSlideIndex: state.activeSlideIndex,
+      //   numItems,
+      // }),
       display: 'flex',
       flex: '1 0 100%',
       flexBasis: '100%',

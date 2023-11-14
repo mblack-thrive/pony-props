@@ -184,37 +184,37 @@ var usePony = function usePony(_ref) {
 
       if (slideAnimation) {
         slideAnimation.onfinish = function () {
-          if (currentSwipeDirection === exports.ActionKind.Previous) {
-            dispatch({
-              type: exports.ActionKind.UpdateOrder,
-              payload: {
-                numItems: numItems,
-                activeSlideIndex: state.activeSlideIndex
-              }
-            });
-          }
-
-          if (currentSwipeDirection === exports.ActionKind.Next) {
-            dispatch({
-              type: exports.ActionKind.UpdateOrder,
-              payload: {
-                numItems: numItems,
-                activeSlideIndex: state.activeSlideIndex
-              }
-            });
-          }
-
-          dispatch({
-            type: exports.ActionKind.AnimationComplete,
-            payload: {
-              numItems: numItems
+          setTimeout(function () {
+            if (currentSwipeDirection === exports.ActionKind.Previous) {
+              dispatch({
+                type: exports.ActionKind.UpdateOrder,
+                payload: {
+                  numItems: numItems,
+                  activeSlideIndex: state.activeSlideIndex
+                }
+              });
             }
-          });
-          onAfterChange && onAfterChange(state.activeSlideIndex);
-        };
-      } // setTimeout(() => {
-      // }, TRANSITION_DURATION_MS);
 
+            if (currentSwipeDirection === exports.ActionKind.Next) {
+              dispatch({
+                type: exports.ActionKind.UpdateOrder,
+                payload: {
+                  numItems: numItems,
+                  activeSlideIndex: state.activeSlideIndex
+                }
+              });
+            }
+
+            dispatch({
+              type: exports.ActionKind.AnimationComplete,
+              payload: {
+                numItems: numItems
+              }
+            });
+            onAfterChange && onAfterChange(state.activeSlideIndex);
+          }, 50);
+        };
+      }
     }
   }, [state.activeSlideIndex, currentSwipeDirection, numItems]);
 
@@ -275,12 +275,12 @@ var usePony = function usePony(_ref) {
       'aria-current': index === state.activeSlideIndex,
       // 'aria-hidden': index !== state.activeSlideIndex,
       style: {
-        // order: state.order[index],
-        order: getOrder({
-          index: index,
-          activeSlideIndex: state.activeSlideIndex,
-          numItems: numItems
-        }),
+        order: state.order[index],
+        // order: getOrder({
+        //   index,
+        //   activeSlideIndex: state.activeSlideIndex,
+        //   numItems,
+        // }),
         display: 'flex',
         flex: '1 0 100%',
         flexBasis: '100%',
