@@ -294,7 +294,7 @@ var usePony = function usePony(_ref) {
         display: 'flex',
         flex: '1 0 100%',
         flexBasis: '100%',
-        transition: currentSwipeDirection === ActionKind.Next ? "order " + TRANSITION_DURATION_MS / 1000 + "s ease-in" : 'none'
+        transition: 'none'
       }
     };
   };
