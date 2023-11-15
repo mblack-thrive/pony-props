@@ -277,6 +277,10 @@ var usePony = function usePony(_ref) {
   };
 
   var getCarouselItemProps = function getCarouselItemProps(index) {
+    console.log(currentSwipeDirection);
+    console.log(state.slideDirection);
+    console.log(exports.ActionKind.Next);
+    console.log(currentSwipeDirection === exports.ActionKind.Next);
     return {
       ref: carouselItemRef,
       id: "carousel-item-" + (index === state.activeSlideIndex ? 'active' : index),
