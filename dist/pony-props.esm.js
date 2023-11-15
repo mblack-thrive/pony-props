@@ -1,5 +1,4 @@
 import { useReducer, useRef, useState, useEffect } from 'react';
-import { flushSync } from 'react-dom';
 
 function _extends() {
   _extends = Object.assign || function (target) {
@@ -178,8 +177,7 @@ var usePony = function usePony(_ref) {
       }];
       var slideAnimation = carouselRef == null ? void 0 : (_carouselRef$current = carouselRef.current) == null ? void 0 : _carouselRef$current.animate(currentSwipeDirection === ActionKind.Previous ? transformArray : transformArray.reverse(), {
         easing: 'ease-in',
-        duration: TRANSITION_DURATION_MS,
-        fill: 'forwards'
+        duration: TRANSITION_DURATION_MS
       });
 
       if (slideAnimation) {
@@ -206,14 +204,14 @@ var usePony = function usePony(_ref) {
                 activeSlideIndex: state.activeSlideIndex
               }
             });
-          }
+          } // flushSync(() => {
+          //   // reset the animation start, hopefully after the order has changed
+          //   if (carouselRef?.current) {
+          //     carouselRef.current.style.transform = 'translate3d(0, 0, 0)';
+          //   }
+          // });
 
-          flushSync(function () {
-            // reset the animation start, hopefully after the order has changed
-            if (carouselRef != null && carouselRef.current) {
-              carouselRef.current.style.transform = 'translate3d(0, 0, 0)';
-            }
-          });
+
           dispatch({
             type: ActionKind.AnimationComplete,
             payload: {
@@ -296,7 +294,7 @@ var usePony = function usePony(_ref) {
         display: 'flex',
         flex: '1 0 100%',
         flexBasis: '100%',
-        transition: currentSwipeDirection === ActionKind.Next ? "order " + (TRANSITION_DURATION_MS / 1000 + 0.1) + "s ease-in" : 'none'
+        transition: currentSwipeDirection === ActionKind.Next ? "order " + TRANSITION_DURATION_MS / 1000 + "s ease-in" : 'none'
       }
     };
   };

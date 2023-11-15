@@ -6,7 +6,7 @@ import {
   useEffect,
   useRef,
 } from 'react';
-import { flushSync } from 'react-dom';
+// import { flushSync } from 'react-dom';
 import { ActionKind } from './usePony.interface';
 import { initialState, reducer } from './usePony.state';
 import { getOrder } from './utils/get-flex-order';
@@ -105,7 +105,7 @@ export const usePony = ({
         {
           easing: 'ease-in',
           duration: TRANSITION_DURATION_MS,
-          fill: 'forwards',
+          // fill: 'forwards',
         }
       );
 
@@ -130,12 +130,12 @@ export const usePony = ({
             }});
           }
 
-          flushSync(() => {
-            // reset the animation start, hopefully after the order has changed
-            if (carouselRef?.current) {
-              carouselRef.current.style.transform = 'translate3d(0, 0, 0)';
-            }
-          });
+          // flushSync(() => {
+          //   // reset the animation start, hopefully after the order has changed
+          //   if (carouselRef?.current) {
+          //     carouselRef.current.style.transform = 'translate3d(0, 0, 0)';
+          //   }
+          // });
   
           dispatch({ type: ActionKind.AnimationComplete, payload: {
             numItems,
@@ -203,7 +203,7 @@ export const usePony = ({
         flex: '1 0 100%',
         flexBasis: '100%',
         transition: currentSwipeDirection === ActionKind.Next
-          ? `order ${(TRANSITION_DURATION_MS / 1000) + 0.1}s ease-in`
+          ? `order ${TRANSITION_DURATION_MS / 1000}s ease-in`
           : 'none',
           // Only apply this transition when the current swipe direction is next
           // This ensures the re-ordering of items is smoother.
