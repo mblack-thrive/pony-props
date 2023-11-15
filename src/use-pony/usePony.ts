@@ -111,8 +111,8 @@ export const usePony = ({
 
       if (slideAnimation) {
         slideAnimation.onfinish = () => {
-          (slideAnimation as any).commitStyles();
-          slideAnimation.cancel();
+          // (slideAnimation as any).commitStyles();
+          // slideAnimation.cancel();
           // setTimeout(() => {
           // }, 10);
           

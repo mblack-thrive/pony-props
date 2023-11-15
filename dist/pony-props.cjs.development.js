@@ -184,10 +184,10 @@ var usePony = function usePony(_ref) {
 
       if (slideAnimation) {
         slideAnimation.onfinish = function () {
-          slideAnimation.commitStyles();
-          slideAnimation.cancel(); // setTimeout(() => {
+          // (slideAnimation as any).commitStyles();
+          // slideAnimation.cancel();
+          // setTimeout(() => {
           // }, 10);
-
           if (currentSwipeDirection === exports.ActionKind.Previous) {
             dispatch({
               type: exports.ActionKind.UpdateOrder,
