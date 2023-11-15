@@ -177,10 +177,6 @@ var usePony = function usePony(_ref) {
       }, {
         transform: 'translate3d(0px, 0px, 0px)'
       }];
-      var slideAnimation = carouselRef == null ? void 0 : (_carouselRef$current = carouselRef.current) == null ? void 0 : _carouselRef$current.animate(currentSwipeDirection === exports.ActionKind.Previous ? transformArray : transformArray.reverse(), {
-        easing: 'ease-in',
-        duration: TRANSITION_DURATION_MS
-      });
 
       if (currentSwipeDirection === exports.ActionKind.Previous) {
         dispatch({
@@ -201,6 +197,11 @@ var usePony = function usePony(_ref) {
           }
         });
       }
+
+      var slideAnimation = carouselRef == null ? void 0 : (_carouselRef$current = carouselRef.current) == null ? void 0 : _carouselRef$current.animate(currentSwipeDirection === exports.ActionKind.Previous ? transformArray : transformArray.reverse(), {
+        easing: 'ease-in',
+        duration: TRANSITION_DURATION_MS
+      });
 
       if (slideAnimation) {
         slideAnimation.onfinish = function () {

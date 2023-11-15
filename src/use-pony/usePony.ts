@@ -97,16 +97,6 @@ export const usePony = ({
         { transform: 'translate3d(0px, 0px, 0px)' },
       ];
 
-      const slideAnimation = carouselRef?.current?.animate(
-        currentSwipeDirection === ActionKind.Previous
-          ? transformArray
-          : transformArray.reverse(),
-        {
-          easing: 'ease-in',
-          duration: TRANSITION_DURATION_MS,
-        }
-      );
-
       if (currentSwipeDirection === ActionKind.Previous) {
         dispatch({ type: ActionKind.UpdateOrder, payload: {
           numItems,
@@ -120,6 +110,16 @@ export const usePony = ({
           activeSlideIndex: state.activeSlideIndex,
         }});
       }
+
+      const slideAnimation = carouselRef?.current?.animate(
+        currentSwipeDirection === ActionKind.Previous
+          ? transformArray
+          : transformArray.reverse(),
+        {
+          easing: 'ease-in',
+          duration: TRANSITION_DURATION_MS,
+        }
+      );
 
       if (slideAnimation) {
         slideAnimation.onfinish = () => {
