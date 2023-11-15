@@ -186,13 +186,8 @@ var usePony = function usePony(_ref) {
       if (slideAnimation) {
         slideAnimation.onfinish = function () {
           slideAnimation.commitStyles();
-          slideAnimation.cancel();
-          setTimeout(function () {
-            // reset the animation start, hopefully after the order has changed
-            if (carouselRef != null && carouselRef.current) {
-              carouselRef.current.style.transform = 'translate3d(0, 0, 0)';
-            }
-          }, 10);
+          slideAnimation.cancel(); // setTimeout(() => {
+          // }, 10);
 
           if (currentSwipeDirection === exports.ActionKind.Previous) {
             dispatch({
@@ -212,6 +207,11 @@ var usePony = function usePony(_ref) {
                 activeSlideIndex: state.activeSlideIndex
               }
             });
+          } // reset the animation start, hopefully after the order has changed
+
+
+          if (carouselRef != null && carouselRef.current) {
+            carouselRef.current.style.transform = 'translate3d(0, 0, 0)';
           }
 
           dispatch({
