@@ -97,20 +97,6 @@ export const usePony = ({
         { transform: 'translate3d(0px, 0px, 0px)' },
       ];
 
-      if (currentSwipeDirection === ActionKind.Previous) {
-        dispatch({ type: ActionKind.UpdateOrder, payload: {
-          numItems,
-          activeSlideIndex: state.activeSlideIndex,
-        }});
-      }
-
-      if (currentSwipeDirection === ActionKind.Next) {
-        dispatch({ type: ActionKind.UpdateOrder, payload: {
-          numItems,
-          activeSlideIndex: state.activeSlideIndex,
-        }});
-      }
-
       const slideAnimation = carouselRef?.current?.animate(
         currentSwipeDirection === ActionKind.Previous
           ? transformArray
@@ -126,17 +112,31 @@ export const usePony = ({
         slideAnimation.onfinish = () => {
           (slideAnimation as any).commitStyles();
           slideAnimation.cancel();
-          // setTimeout(() => {
-          //   // reset the animation start, hopefully after the order has changed
-          //   if (carouselRef?.current) {
-          //     carouselRef.current.style.transform = 'translate3d(0, 0, 0)';
-          //   }
-          // }, 50);
-  
-            dispatch({ type: ActionKind.AnimationComplete, payload: {
+          setTimeout(() => {
+            // reset the animation start, hopefully after the order has changed
+            if (carouselRef?.current) {
+              carouselRef.current.style.transform = 'translate3d(0, 0, 0)';
+            }
+          }, 50);
+
+          if (currentSwipeDirection === ActionKind.Previous) {
+            dispatch({ type: ActionKind.UpdateOrder, payload: {
               numItems,
+              activeSlideIndex: state.activeSlideIndex,
             }});
-            onAfterChange && onAfterChange(state.activeSlideIndex);
+          }
+
+          if (currentSwipeDirection === ActionKind.Next) {
+            dispatch({ type: ActionKind.UpdateOrder, payload: {
+              numItems,
+              activeSlideIndex: state.activeSlideIndex,
+            }});
+          }
+  
+          dispatch({ type: ActionKind.AnimationComplete, payload: {
+            numItems,
+          }});
+          onAfterChange && onAfterChange(state.activeSlideIndex);
         };
       }
     }

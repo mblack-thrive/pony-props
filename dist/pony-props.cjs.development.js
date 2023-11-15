@@ -177,27 +177,6 @@ var usePony = function usePony(_ref) {
       }, {
         transform: 'translate3d(0px, 0px, 0px)'
       }];
-
-      if (currentSwipeDirection === exports.ActionKind.Previous) {
-        dispatch({
-          type: exports.ActionKind.UpdateOrder,
-          payload: {
-            numItems: numItems,
-            activeSlideIndex: state.activeSlideIndex
-          }
-        });
-      }
-
-      if (currentSwipeDirection === exports.ActionKind.Next) {
-        dispatch({
-          type: exports.ActionKind.UpdateOrder,
-          payload: {
-            numItems: numItems,
-            activeSlideIndex: state.activeSlideIndex
-          }
-        });
-      }
-
       var slideAnimation = carouselRef == null ? void 0 : (_carouselRef$current = carouselRef.current) == null ? void 0 : _carouselRef$current.animate(currentSwipeDirection === exports.ActionKind.Previous ? transformArray : transformArray.reverse(), {
         easing: 'ease-in',
         duration: TRANSITION_DURATION_MS,
@@ -207,12 +186,33 @@ var usePony = function usePony(_ref) {
       if (slideAnimation) {
         slideAnimation.onfinish = function () {
           slideAnimation.commitStyles();
-          slideAnimation.cancel(); // setTimeout(() => {
-          //   // reset the animation start, hopefully after the order has changed
-          //   if (carouselRef?.current) {
-          //     carouselRef.current.style.transform = 'translate3d(0, 0, 0)';
-          //   }
-          // }, 50);
+          slideAnimation.cancel();
+          setTimeout(function () {
+            // reset the animation start, hopefully after the order has changed
+            if (carouselRef != null && carouselRef.current) {
+              carouselRef.current.style.transform = 'translate3d(0, 0, 0)';
+            }
+          }, 50);
+
+          if (currentSwipeDirection === exports.ActionKind.Previous) {
+            dispatch({
+              type: exports.ActionKind.UpdateOrder,
+              payload: {
+                numItems: numItems,
+                activeSlideIndex: state.activeSlideIndex
+              }
+            });
+          }
+
+          if (currentSwipeDirection === exports.ActionKind.Next) {
+            dispatch({
+              type: exports.ActionKind.UpdateOrder,
+              payload: {
+                numItems: numItems,
+                activeSlideIndex: state.activeSlideIndex
+              }
+            });
+          }
 
           dispatch({
             type: exports.ActionKind.AnimationComplete,
