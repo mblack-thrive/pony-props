@@ -93,8 +93,8 @@ export const usePony = ({
     // Listen for swipe direction changes. Apply appropriate translateX transition.
     if (currentSwipeDirection) {
       const transformArray = [
-        { transform: 'translateX(-100%)' },
-        { transform: 'translateX(0px)' },
+        { transform: 'translate3d(-100%, 0px, 0px)' },
+        { transform: 'translate3d(0px, 0px, 0px)' },
       ];
 
       const slideAnimation = carouselRef?.current?.animate(
@@ -109,7 +109,7 @@ export const usePony = ({
 
       if (slideAnimation) {
         slideAnimation.onfinish = () => {
-          setTimeout(() => {
+          // setTimeout(() => {
             if (currentSwipeDirection === ActionKind.Previous) {
               dispatch({ type: ActionKind.UpdateOrder, payload: {
                 numItems,
@@ -128,7 +128,7 @@ export const usePony = ({
               numItems,
             }});
             onAfterChange && onAfterChange(state.activeSlideIndex);
-          }, 50);
+          // }, 50);
         };
       }
     }
@@ -185,7 +185,9 @@ export const usePony = ({
       display: 'flex',
       flex: '1 0 100%',
       flexBasis: '100%',
-      transition: 'none',
+      transition: currentSwipeDirection === ActionKind.Next
+        ? `order ${TRANSITION_DURATION_MS / 1000 + 0.1}s ease-in`
+        : 'none',
         // Only apply this transition when the current swipe direction is next
         // This ensures the re-ordering of items is smoother.
         // currentSwipeDirection === ActionKind.Next

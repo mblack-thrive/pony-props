@@ -171,9 +171,9 @@ var usePony = function usePony(_ref) {
       var _carouselRef$current;
 
       var transformArray = [{
-        transform: 'translateX(-100%)'
+        transform: 'translate3d(-100%, 0px, 0px)'
       }, {
-        transform: 'translateX(0px)'
+        transform: 'translate3d(0px, 0px, 0px)'
       }];
       var slideAnimation = carouselRef == null ? void 0 : (_carouselRef$current = carouselRef.current) == null ? void 0 : _carouselRef$current.animate(currentSwipeDirection === ActionKind.Previous ? transformArray : transformArray.reverse(), {
         easing: 'ease-in',
@@ -182,35 +182,34 @@ var usePony = function usePony(_ref) {
 
       if (slideAnimation) {
         slideAnimation.onfinish = function () {
-          setTimeout(function () {
-            if (currentSwipeDirection === ActionKind.Previous) {
-              dispatch({
-                type: ActionKind.UpdateOrder,
-                payload: {
-                  numItems: numItems,
-                  activeSlideIndex: state.activeSlideIndex
-                }
-              });
-            }
-
-            if (currentSwipeDirection === ActionKind.Next) {
-              dispatch({
-                type: ActionKind.UpdateOrder,
-                payload: {
-                  numItems: numItems,
-                  activeSlideIndex: state.activeSlideIndex
-                }
-              });
-            }
-
+          // setTimeout(() => {
+          if (currentSwipeDirection === ActionKind.Previous) {
             dispatch({
-              type: ActionKind.AnimationComplete,
+              type: ActionKind.UpdateOrder,
               payload: {
-                numItems: numItems
+                numItems: numItems,
+                activeSlideIndex: state.activeSlideIndex
               }
             });
-            onAfterChange && onAfterChange(state.activeSlideIndex);
-          }, 50);
+          }
+
+          if (currentSwipeDirection === ActionKind.Next) {
+            dispatch({
+              type: ActionKind.UpdateOrder,
+              payload: {
+                numItems: numItems,
+                activeSlideIndex: state.activeSlideIndex
+              }
+            });
+          }
+
+          dispatch({
+            type: ActionKind.AnimationComplete,
+            payload: {
+              numItems: numItems
+            }
+          });
+          onAfterChange && onAfterChange(state.activeSlideIndex); // }, 50);
         };
       }
     }
@@ -282,7 +281,7 @@ var usePony = function usePony(_ref) {
         display: 'flex',
         flex: '1 0 100%',
         flexBasis: '100%',
-        transition: 'none'
+        transition: currentSwipeDirection === ActionKind.Next ? "order " + (TRANSITION_DURATION_MS / 1000 + 0.1) + "s ease-in" : 'none'
       }
     };
   };
