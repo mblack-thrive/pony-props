@@ -197,7 +197,9 @@ export const usePony = ({
       display: 'flex',
       flex: '1 0 100%',
       flexBasis: '100%',
-      transition: 'none',
+      transition: currentSwipeDirection === ActionKind.Next
+        ? `order ${(TRANSITION_DURATION_MS / 1000) + 0.1}s ease-in`
+        : 'none',
         // Only apply this transition when the current swipe direction is next
         // This ensures the re-ordering of items is smoother.
         // currentSwipeDirection === ActionKind.Next

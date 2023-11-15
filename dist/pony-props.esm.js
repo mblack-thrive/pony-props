@@ -292,7 +292,7 @@ var usePony = function usePony(_ref) {
         display: 'flex',
         flex: '1 0 100%',
         flexBasis: '100%',
-        transition: 'none'
+        transition: currentSwipeDirection === ActionKind.Next ? "order " + (TRANSITION_DURATION_MS / 1000 + 0.1) + "s ease-in" : 'none'
       }
     };
   };
