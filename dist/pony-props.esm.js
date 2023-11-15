@@ -190,7 +190,7 @@ var usePony = function usePony(_ref) {
             if (carouselRef != null && carouselRef.current) {
               carouselRef.current.style.transform = 'translate3d(0, 0, 0)';
             }
-          }, 50);
+          }, 10);
 
           if (currentSwipeDirection === ActionKind.Previous) {
             dispatch({
@@ -281,16 +281,16 @@ var usePony = function usePony(_ref) {
       'aria-current': index === state.activeSlideIndex,
       // 'aria-hidden': index !== state.activeSlideIndex,
       style: {
-        // order: state.order[index],
-        order: getOrder({
-          index: index,
-          activeSlideIndex: state.activeSlideIndex,
-          numItems: numItems
-        }),
+        order: state.order[index],
+        // order: getOrder({
+        //   index,
+        //   activeSlideIndex: state.activeSlideIndex,
+        //   numItems,
+        // }),
         display: 'flex',
         flex: '1 0 100%',
         flexBasis: '100%',
-        transition: currentSwipeDirection === ActionKind.Next ? "order " + TRANSITION_DURATION_MS / 1000 + "s ease-in" : 'none'
+        transition: 'none'
       }
     };
   };
