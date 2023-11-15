@@ -6,6 +6,7 @@ import {
   useEffect,
   useRef,
 } from 'react';
+import { flushSync } from 'react-dom';
 import { ActionKind } from './usePony.interface';
 import { initialState, reducer } from './usePony.state';
 import { getOrder } from './utils/get-flex-order';
@@ -114,7 +115,7 @@ export const usePony = ({
           slideAnimation.cancel();
           // setTimeout(() => {
           // }, 10);
-
+          
           if (currentSwipeDirection === ActionKind.Previous) {
             dispatch({ type: ActionKind.UpdateOrder, payload: {
               numItems,
@@ -128,11 +129,13 @@ export const usePony = ({
               activeSlideIndex: state.activeSlideIndex,
             }});
           }
-          
-          // reset the animation start, hopefully after the order has changed
-          if (carouselRef?.current) {
-            carouselRef.current.style.transform = 'translate3d(0, 0, 0)';
-          }
+
+          flushSync(() => {
+            // reset the animation start, hopefully after the order has changed
+            if (carouselRef?.current) {
+              carouselRef.current.style.transform = 'translate3d(0, 0, 0)';
+            }
+          });
   
           dispatch({ type: ActionKind.AnimationComplete, payload: {
             numItems,

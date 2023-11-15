@@ -3,6 +3,7 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var react = require('react');
+var reactDom = require('react-dom');
 
 function _extends() {
   _extends = Object.assign || function (target) {
@@ -207,13 +208,14 @@ var usePony = function usePony(_ref) {
                 activeSlideIndex: state.activeSlideIndex
               }
             });
-          } // reset the animation start, hopefully after the order has changed
-
-
-          if (carouselRef != null && carouselRef.current) {
-            carouselRef.current.style.transform = 'translate3d(0, 0, 0)';
           }
 
+          reactDom.flushSync(function () {
+            // reset the animation start, hopefully after the order has changed
+            if (carouselRef != null && carouselRef.current) {
+              carouselRef.current.style.transform = 'translate3d(0, 0, 0)';
+            }
+          });
           dispatch({
             type: exports.ActionKind.AnimationComplete,
             payload: {
