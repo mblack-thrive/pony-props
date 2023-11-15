@@ -182,22 +182,22 @@ var usePony = function usePony(_ref) {
         duration: TRANSITION_DURATION_MS
       });
 
+      if (currentSwipeDirection === exports.ActionKind.Previous) {
+        dispatch({
+          type: exports.ActionKind.UpdateOrder,
+          payload: {
+            numItems: numItems,
+            activeSlideIndex: state.activeSlideIndex
+          }
+        });
+      }
+
       if (slideAnimation) {
         slideAnimation.onfinish = function () {
           // (slideAnimation as any).commitStyles();
           // slideAnimation.cancel();
           // setTimeout(() => {
           // }, 10);
-          if (currentSwipeDirection === exports.ActionKind.Previous) {
-            dispatch({
-              type: exports.ActionKind.UpdateOrder,
-              payload: {
-                numItems: numItems,
-                activeSlideIndex: state.activeSlideIndex
-              }
-            });
-          }
-
           if (currentSwipeDirection === exports.ActionKind.Next) {
             dispatch({
               type: exports.ActionKind.UpdateOrder,
@@ -206,13 +206,7 @@ var usePony = function usePony(_ref) {
                 activeSlideIndex: state.activeSlideIndex
               }
             });
-          } // flushSync(() => {
-          //   // reset the animation start, hopefully after the order has changed
-          //   if (carouselRef?.current) {
-          //     carouselRef.current.style.transform = 'translate3d(0, 0, 0)';
-          //   }
-          // });
-
+          }
 
           dispatch({
             type: exports.ActionKind.AnimationComplete,
@@ -275,10 +269,6 @@ var usePony = function usePony(_ref) {
   };
 
   var getCarouselItemProps = function getCarouselItemProps(index) {
-    console.log(currentSwipeDirection);
-    console.log(state.slideDirection);
-    console.log(exports.ActionKind.Next);
-    console.log(currentSwipeDirection === exports.ActionKind.Next);
     return {
       ref: carouselItemRef,
       id: "carousel-item-" + (index === state.activeSlideIndex ? 'active' : index),

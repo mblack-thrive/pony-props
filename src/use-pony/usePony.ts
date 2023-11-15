@@ -108,6 +108,13 @@ export const usePony = ({
           // fill: 'forwards',
         }
       );
+          
+      if (currentSwipeDirection === ActionKind.Previous) {
+        dispatch({ type: ActionKind.UpdateOrder, payload: {
+          numItems,
+          activeSlideIndex: state.activeSlideIndex,
+        }});
+      }
 
       if (slideAnimation) {
         slideAnimation.onfinish = () => {
@@ -115,13 +122,6 @@ export const usePony = ({
           // slideAnimation.cancel();
           // setTimeout(() => {
           // }, 10);
-          
-          if (currentSwipeDirection === ActionKind.Previous) {
-            dispatch({ type: ActionKind.UpdateOrder, payload: {
-              numItems,
-              activeSlideIndex: state.activeSlideIndex,
-            }});
-          }
 
           if (currentSwipeDirection === ActionKind.Next) {
             dispatch({ type: ActionKind.UpdateOrder, payload: {
@@ -129,13 +129,6 @@ export const usePony = ({
               activeSlideIndex: state.activeSlideIndex,
             }});
           }
-
-          // flushSync(() => {
-          //   // reset the animation start, hopefully after the order has changed
-          //   if (carouselRef?.current) {
-          //     carouselRef.current.style.transform = 'translate3d(0, 0, 0)';
-          //   }
-          // });
   
           dispatch({ type: ActionKind.AnimationComplete, payload: {
             numItems,
@@ -178,39 +171,33 @@ export const usePony = ({
     },
   });
 
-  const getCarouselItemProps = (index: number) => {
-    console.log(currentSwipeDirection);
-    console.log(state.slideDirection);
-    console.log(ActionKind.Next);
-    console.log(currentSwipeDirection === ActionKind.Next);
-    return {
-      ref: carouselItemRef,
-      id: `carousel-item-${
-        index === state.activeSlideIndex ? 'active' : index
-      }`,
-      // 'aria-roledescription': 'slide',
-      'aria-label': `${index + 1} of ${numItems}`,
-      'aria-current': index === state.activeSlideIndex,
-      // 'aria-hidden': index !== state.activeSlideIndex,
-      style: {
-        order: state.order[index],
-        // order: getOrder({
-        //   index,
-        //   activeSlideIndex: state.activeSlideIndex,
-        //   numItems,
-        // }),
-        display: 'flex',
-        flex: '1 0 100%',
-        flexBasis: '100%',
-        transition: 'none',
-          // Only apply this transition when the current swipe direction is next
-          // This ensures the re-ordering of items is smoother.
-          // currentSwipeDirection === ActionKind.Next
-          //   ? `order ${TRANSITION_DURATION_MS / 1000 + 0.1}s ease-in`
-          //   : 'none',
-      },
-    };
-  };
+  const getCarouselItemProps = (index: number) => ({
+    ref: carouselItemRef,
+    id: `carousel-item-${
+      index === state.activeSlideIndex ? 'active' : index
+    }`,
+    // 'aria-roledescription': 'slide',
+    'aria-label': `${index + 1} of ${numItems}`,
+    'aria-current': index === state.activeSlideIndex,
+    // 'aria-hidden': index !== state.activeSlideIndex,
+    style: {
+      order: state.order[index],
+      // order: getOrder({
+      //   index,
+      //   activeSlideIndex: state.activeSlideIndex,
+      //   numItems,
+      // }),
+      display: 'flex',
+      flex: '1 0 100%',
+      flexBasis: '100%',
+      transition: 'none',
+        // Only apply this transition when the current swipe direction is next
+        // This ensures the re-ordering of items is smoother.
+        // currentSwipeDirection === ActionKind.Next
+        //   ? `order ${TRANSITION_DURATION_MS / 1000 + 0.1}s ease-in`
+        //   : 'none',
+    },
+  });
 
   const getButtonProps = (
     direction: ActionKind.Previous | ActionKind.Next
