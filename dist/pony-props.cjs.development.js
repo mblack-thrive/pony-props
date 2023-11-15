@@ -200,19 +200,27 @@ var usePony = function usePony(_ref) {
 
       var slideAnimation = carouselRef == null ? void 0 : (_carouselRef$current = carouselRef.current) == null ? void 0 : _carouselRef$current.animate(currentSwipeDirection === exports.ActionKind.Previous ? transformArray : transformArray.reverse(), {
         easing: 'ease-in',
-        duration: TRANSITION_DURATION_MS
+        duration: TRANSITION_DURATION_MS,
+        fill: 'forwards'
       });
 
       if (slideAnimation) {
         slideAnimation.onfinish = function () {
-          // setTimeout(() => {
+          slideAnimation.commitStyles();
+          slideAnimation.cancel();
+          setTimeout(function () {
+            // reset the animation start, hopefully after the order has changed
+            if (carouselRef != null && carouselRef.current) {
+              carouselRef.current.style.transform = 'translate3d(0, 0, 0)';
+            }
+          }, 50);
           dispatch({
             type: exports.ActionKind.AnimationComplete,
             payload: {
               numItems: numItems
             }
           });
-          onAfterChange && onAfterChange(state.activeSlideIndex); // }, 50);
+          onAfterChange && onAfterChange(state.activeSlideIndex);
         };
       }
     }

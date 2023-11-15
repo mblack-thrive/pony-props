@@ -118,18 +118,25 @@ export const usePony = ({
         {
           easing: 'ease-in',
           duration: TRANSITION_DURATION_MS,
+          fill: 'forwards',
         }
       );
 
       if (slideAnimation) {
         slideAnimation.onfinish = () => {
-          // setTimeout(() => {
+          (slideAnimation as any).commitStyles();
+          slideAnimation.cancel();
+          setTimeout(() => {
+            // reset the animation start, hopefully after the order has changed
+            if (carouselRef?.current) {
+              carouselRef.current.style.transform = 'translate3d(0, 0, 0)';
+            }
+          }, 50);
   
             dispatch({ type: ActionKind.AnimationComplete, payload: {
               numItems,
             }});
             onAfterChange && onAfterChange(state.activeSlideIndex);
-          // }, 50);
         };
       }
     }
