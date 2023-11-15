@@ -182,29 +182,29 @@ var usePony = function usePony(_ref) {
         duration: TRANSITION_DURATION_MS
       });
 
+      if (currentSwipeDirection === exports.ActionKind.Previous) {
+        dispatch({
+          type: exports.ActionKind.UpdateOrder,
+          payload: {
+            numItems: numItems,
+            activeSlideIndex: state.activeSlideIndex
+          }
+        });
+      }
+
+      if (currentSwipeDirection === exports.ActionKind.Next) {
+        dispatch({
+          type: exports.ActionKind.UpdateOrder,
+          payload: {
+            numItems: numItems,
+            activeSlideIndex: state.activeSlideIndex
+          }
+        });
+      }
+
       if (slideAnimation) {
         slideAnimation.onfinish = function () {
           // setTimeout(() => {
-          if (currentSwipeDirection === exports.ActionKind.Previous) {
-            dispatch({
-              type: exports.ActionKind.UpdateOrder,
-              payload: {
-                numItems: numItems,
-                activeSlideIndex: state.activeSlideIndex
-              }
-            });
-          }
-
-          if (currentSwipeDirection === exports.ActionKind.Next) {
-            dispatch({
-              type: exports.ActionKind.UpdateOrder,
-              payload: {
-                numItems: numItems,
-                activeSlideIndex: state.activeSlideIndex
-              }
-            });
-          }
-
           dispatch({
             type: exports.ActionKind.AnimationComplete,
             payload: {
@@ -274,12 +274,12 @@ var usePony = function usePony(_ref) {
       'aria-current': index === state.activeSlideIndex,
       // 'aria-hidden': index !== state.activeSlideIndex,
       style: {
-        order: state.order[index],
-        // order: getOrder({
-        //   index,
-        //   activeSlideIndex: state.activeSlideIndex,
-        //   numItems,
-        // }),
+        // order: state.order[index],
+        order: getOrder({
+          index: index,
+          activeSlideIndex: state.activeSlideIndex,
+          numItems: numItems
+        }),
         display: 'flex',
         flex: '1 0 100%',
         flexBasis: '100%',
